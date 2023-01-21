@@ -16,7 +16,24 @@ namespace DreamedHouse.Controllers
 			_context = context;
 		}
 
-		// GET: api/FinishingHouse
+		// POST: api/FinishingHouse
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPost]
+		public async Task<ActionResult<FinishingHouse>> PostFinishingHouse(FinishingHouse finishingHouse)
+		{
+			if (_context.FinishingHouses == null)
+				return Problem("Entity set 'AppDbContext.Users' is null.");
+
+			finishingHouse.CreatedAt = DateTime.Now;
+			finishingHouse.UpdatedAt = DateTime.Now;
+
+			_context.FinishingHouses.Add(finishingHouse);
+			await _context.SaveChangesAsync();
+
+			return CreatedAtAction("GetFinishingHouse", new { id = finishingHouse.FinishingHouseId }, finishingHouse);
+		}
+
+		// GET: api/FinishingHouses
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<FinishingHouse>>> GetFinishingHouses()
 		{
@@ -32,6 +49,79 @@ namespace DreamedHouse.Controllers
 					TypeFinishing = finishingHouse.TypeFinishing
 				})
 				.ToListAsync();
+		}
+
+		// GET: api/FinishingHouse/5
+		// [HttpGet("{id}")]
+		// public async Task<ActionResult<FinishingHouse>> GetFinishingHouse(int id)
+		// {
+		// 	if (_context.FinishingHouses == null)
+		// 		return NotFound();
+
+		// 	var finishingHouse = await _context.FinishingHouses
+		// 		.Select(finishingHouse => new FinishingHouse
+		// 		{
+		// 			FinishingHouseId = finishingHouse.FinishingHouseId,
+		// 			Name = finishingHouse.Name,
+		// 			Price = finishingHouse.Price,
+		// 			TypeFinishing = finishingHouse.TypeFinishing
+		// 		})
+		// 		.FirstOrDefaultAsync(finishingHouse => finishingHouse.FinishingHouseId == id);
+
+		// 	if (finishingHouse == null)
+		// 		return NotFound();
+
+		// 	return finishingHouse;
+		// }
+
+		// PUT: api/FinishingHouse/5
+		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+		[HttpPut("{finishingHouseId}")]
+		public async Task<IActionResult> PutFinishingHouse(int finishingHouseId, FinishingHouse finishingHouse)
+		{
+			if (finishingHouseId != finishingHouse.FinishingHouseId)
+				return BadRequest();
+
+			finishingHouse.UpdatedAt = DateTime.Now;
+
+			_context.Entry(finishingHouse).State = EntityState.Modified;
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!FinishingHouseExists(finishingHouseId))
+					return NotFound();
+				else
+					throw;
+			}
+
+			return NoContent();
+		}
+
+		// DELETE: api/FinishingHouse/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteFinishingHouse(int finishingHouseId)
+		{
+			if (_context.FinishingHouses == null)
+				return NotFound();
+
+			var finishingHouse = await _context.FinishingHouses.FindAsync(finishingHouseId);
+
+			if (finishingHouse == null)
+				return NotFound();
+
+			_context.FinishingHouses.Remove(finishingHouse);
+			await _context.SaveChangesAsync();
+
+			return NoContent();
+		}
+
+		private bool FinishingHouseExists(int finishingHouseId)
+		{
+			return (_context.FinishingHouses?.Any(e => e.FinishingHouseId == finishingHouseId)).GetValueOrDefault();
 		}
 	}
 }

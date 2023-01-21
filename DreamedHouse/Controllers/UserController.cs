@@ -18,58 +18,14 @@ namespace DreamedHouse.Controllers
 			_context = context;
 		}
 
-		// POST: api/User
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPost]
-		public async Task<ActionResult<User>> PostUser(User user)
-		{
-			if (_context.Users == null)
-				return Problem("Entity set 'AppDbContext.Users' is null.");
-
-			user.RoleId = 3;
-			user.CreatedAt = DateTime.Now;
-			user.UpdatedAt = DateTime.Now;
-
-			_context.Users.Add(user);
-			await _context.SaveChangesAsync();
-
-			return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-		}
-
-		// GET: api/User
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-		{
-			if (_context.Users == null)
-				return NotFound();
-
-			return await _context.Users
-				.Where(user => user.RoleId == 2)
-				.ToListAsync();
-		}
-
 		// GET: api/User/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<User>> GetUser(int id)
+		[HttpGet("{userId}")]
+		public async Task<ActionResult<User>> GetUser(int userId)
 		{
 			if (_context.Users == null)
 				return NotFound();
 
-			var user = await _context.Users
-				.Select(user => new User{
-					UserId = user.UserId,
-					Dni = user.Dni,
-					FirstName = user.FirstName,
-					LastName = user.LastName,
-					BirthDate = user.BirthDate,
-					PhoneNumber = user.PhoneNumber,
-					Email = user.Email,
-					Password = user.Password,
-					RoleId = user.RoleId,
-					CreatedAt = user.CreatedAt,
-					UpdatedAt = user.UpdatedAt
-				})
-				.FirstOrDefaultAsync(user => user.UserId == id);
+			var user = await _context.Users.FindAsync(userId);
 
 			if (user == null)
 				return NotFound();
@@ -79,10 +35,10 @@ namespace DreamedHouse.Controllers
 
 		// PUT: api/User/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutUser(int id, User user)
+		[HttpPut("{userId}")]
+		public async Task<IActionResult> PutUser(int userId, User user)
 		{
-			if (id != user.UserId)
+			if (userId != user.UserId)
 				return BadRequest();
 
 			user.UpdatedAt = DateTime.Now;
@@ -95,7 +51,7 @@ namespace DreamedHouse.Controllers
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!UserExists(id))
+				if (!UserExists(userId))
 					return NotFound();
 				else
 					throw;
@@ -105,13 +61,13 @@ namespace DreamedHouse.Controllers
 		}
 
 		// DELETE: api/User/5
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteUser(int id)
+		[HttpDelete("{userId}")]
+		public async Task<IActionResult> DeleteUser(int userId)
 		{
 			if (_context.Users == null)
 				return NotFound();
 
-			var user = await _context.Users.FindAsync(id);
+			var user = await _context.Users.FindAsync(userId);
 
 			if (user == null)
 				return NotFound();
@@ -122,9 +78,9 @@ namespace DreamedHouse.Controllers
 			return NoContent();
 		}
 
-		private bool UserExists(int id)
+		private bool UserExists(int userId)
 		{
-			return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+			return (_context.Users?.Any(e => e.UserId == userId)).GetValueOrDefault();
 		}
 	}
 }

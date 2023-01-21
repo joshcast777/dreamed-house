@@ -29,18 +29,18 @@ namespace DreamedHouse.Controllers
 			_context.ProformaInvoices.Add(proformaInvoice);
 			await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetProformaInvoice", new { id = proformaInvoice.ProformaInvoiceId }, proformaInvoice);
+			return CreatedAtAction("GetProformaInvoice", new { proformaInvoiceId = proformaInvoice.ProformaInvoiceId }, proformaInvoice);
 		}
 
 		// GET: api/ProformaInvoices/2
-		[HttpGet("/api/ProformaInvoices/{id}")]
-		public async Task<ActionResult<IEnumerable<ProformaInvoice>>> GetProformaInvoices(int id)
+		[HttpGet("/api/ProformaInvoices/{userId}")]
+		public async Task<ActionResult<IEnumerable<ProformaInvoice>>> GetProformaInvoices(int userId)
 		{
 			if (_context.ProformaInvoices == null)
 				return NotFound();
 
 			return await _context.ProformaInvoices
-				.Where(proformaInvoice => proformaInvoice.UserId == id)
+				.Where(proformaInvoice => proformaInvoice.UserId == userId)
 				.Select(proformaInvoice => new ProformaInvoice
 				{
 					ProformaInvoiceId = proformaInvoice.ProformaInvoiceId,
@@ -71,8 +71,8 @@ namespace DreamedHouse.Controllers
 		}
 
 		// GET: api/ProformaInvoice/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<ProformaInvoice>> GetProformaInvoice(int id)
+		[HttpGet("{proformaInvoiceId}")]
+		public async Task<ActionResult<ProformaInvoice>> GetProformaInvoice(int proformaInvoiceId)
 		{
 			if (_context.ProformaInvoices == null)
 				return NotFound();
@@ -104,7 +104,7 @@ namespace DreamedHouse.Controllers
 							}
 						})
 				})
-				.FirstOrDefaultAsync(proformaInvoice => proformaInvoice.ProformaInvoiceId == id);
+				.FirstOrDefaultAsync(proformaInvoice => proformaInvoice.ProformaInvoiceId == proformaInvoiceId);
 
 			if (proformaInvoice == null)
 				return NotFound();

@@ -21,9 +21,10 @@ namespace DreamedHouse.Controllers
 		public async Task<ActionResult<ProformaInvoiceFinishingHouse>> PostProformaInvoiceFinishingHouse(ProformaInvoiceFinishingHouse proformaInvoiceFinishingHouse)
 		{
 			if (_context.ProformaInvoiceFinishingHouse == null)
-				return Problem("Entity set 'AppDbContext.ProformaInvoiceFinishingHouse'  is null.");
+				return Problem("Entity set 'AppDbContext.ProformaInvoiceFinishingHouse' is null.");
 
 			_context.ProformaInvoiceFinishingHouse.Add(proformaInvoiceFinishingHouse);
+
 			try
 			{
 				await _context.SaveChangesAsync();

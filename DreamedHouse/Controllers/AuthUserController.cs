@@ -22,24 +22,26 @@ namespace DreamedHouse.Controllers
 			_configuration = configuration;
 		}
 
-		// POST: api/AuthUser/Login
+		// POST: api/AuthUser/SignIn
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPost("Login")]
+		[HttpPost("SignIn")]
 		public async Task<ActionResult> PostAuthUser(AuthUser authUser)
 		{
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(authUser.Email) && u.Password.Equals(authUser.Password));
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == authUser.Email && u.Password == authUser.Password);
 
 			if (user == null) return BadRequest("InvalidEmailOrPassword");
 			else return Ok(JsonConvert.SerializeObject(GenerateToken(user)));
 		}
 
-		// POST: api/AuthUser/Register
+		// POST: api/AuthUser/SignUp
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPost("Register")]
+		[HttpPost("SignUp")]
 		public async Task<ActionResult<User>> PostUser(User user)
 		{
-			if (_context.Users == null) return Problem("Entity set 'AppDbContext.Users' is null.");
+			if (_context.Users == null)
+				return Problem("Entity set 'AppDbContext.Users' is null.");
 
+			user.RoleId = 2;
 			user.CreatedAt = DateTime.Now;
 			user.UpdatedAt = DateTime.Now;
 

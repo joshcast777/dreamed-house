@@ -25,32 +25,32 @@ public partial class AppDbContext : DbContext
 
 		modelBuilder.Entity<FinishingHouse>(entity =>
 		{
-			entity.HasKey(e => e.FinishingHouseId)
+			entity.HasKey(finishingHouse => finishingHouse.FinishingHouseId)
 				.HasName("PRIMARY");
 
 			entity.ToTable("finishing_houses");
 
-			entity.Property(e => e.FinishingHouseId)
+			entity.Property(finishingHouse => finishingHouse.FinishingHouseId)
 				.HasColumnName("finishing_house_id");
 
-			entity.Property(e => e.CreatedAt)
+			entity.Property(finishingHouse => finishingHouse.CreatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("created_at");
 
-			entity.Property(e => e.Name)
+			entity.Property(finishingHouse => finishingHouse.Name)
 				.HasMaxLength(100)
 				.HasColumnName("name");
 
-			entity.Property(e => e.Price)
+			entity.Property(finishingHouse => finishingHouse.Price)
 				.HasColumnType("double(10,2)")
 				.HasColumnName("price");
 
-			entity.Property(e => e.TypeFinishing)
+			entity.Property(finishingHouse => finishingHouse.TypeFinishing)
 				.HasMaxLength(30)
 				.HasColumnName("type_finishing");
 
-			entity.Property(e => e.UpdatedAt)
+			entity.Property(finishingHouse => finishingHouse.UpdatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("updated_at");
@@ -58,44 +58,44 @@ public partial class AppDbContext : DbContext
 
 		modelBuilder.Entity<House>(entity =>
 		{
-			entity.HasKey(e => e.HouseId)
+			entity.HasKey(house => house.HouseId)
 				.HasName("PRIMARY");
 
 			entity.ToTable("houses");
 
-			entity.Property(e => e.HouseId)
+			entity.Property(house => house.HouseId)
 				.HasColumnName("house_id");
 
-			entity.Property(e => e.BathroomsNumber)
+			entity.Property(house => house.BathroomsNumber)
 				.HasColumnName("bathrooms_number");
 
-			entity.Property(e => e.CreatedAt)
+			entity.Property(house => house.CreatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("created_at");
 
-			entity.Property(e => e.FloorsNumber)
+			entity.Property(house => house.FloorsNumber)
 				.HasColumnName("floors_number");
 
-			entity.Property(e => e.Image)
+			entity.Property(house => house.Image)
 				.HasMaxLength(255)
 				.HasColumnName("image");
 
-			entity.Property(e => e.Name)
+			entity.Property(house => house.Name)
 				.HasMaxLength(100)
 				.HasColumnName("name");
 
-			entity.Property(e => e.Price)
+			entity.Property(house => house.Price)
 				.HasColumnType("double(10,2)")
 				.HasColumnName("price");
 
-			entity.Property(e => e.RoomsNumber)
+			entity.Property(house => house.RoomsNumber)
 				.HasColumnName("rooms_number");
 
-			entity.Property(e => e.SquareMeters)
+			entity.Property(house => house.SquareMeters)
 				.HasColumnName("square_meters");
 
-			entity.Property(e => e.UpdatedAt)
+			entity.Property(house => house.UpdatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("updated_at");
@@ -103,101 +103,101 @@ public partial class AppDbContext : DbContext
 
 		modelBuilder.Entity<ProformaInvoice>(entity =>
 		{
-			entity.HasKey(e => e.ProformaInvoiceId)
+			entity.HasKey(proformaInvoice => proformaInvoice.ProformaInvoiceId)
 				.HasName("PRIMARY");
 
 			entity.ToTable("proforma_invoices");
 
-			entity.HasIndex(e => e.HouseId, "fk_proforma_invoices_houses");
+			entity.HasIndex(proformaInvoice => proformaInvoice.HouseId, "fk_proforma_invoices_houses");
 
-			entity.HasIndex(e => e.UserId, "fk_proforma_invoices_users");
+			entity.HasIndex(proformaInvoice => proformaInvoice.UserId, "fk_proforma_invoices_users");
 
-			entity.Property(e => e.ProformaInvoiceId)
+			entity.Property(proformaInvoice => proformaInvoice.ProformaInvoiceId)
 				.HasColumnName("proforma_invoice_id");
 
-			entity.Property(e => e.CreatedAt)
+			entity.Property(proformaInvoice => proformaInvoice.CreatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("created_at");
 
-			entity.Property(e => e.HouseId)
+			entity.Property(proformaInvoice => proformaInvoice.HouseId)
 				.HasColumnName("house_id");
 
-			entity.Property(e => e.Total)
+			entity.Property(proformaInvoice => proformaInvoice.Total)
 				.HasColumnType("double(10,2)")
 				.HasColumnName("total");
 
-			entity.Property(e => e.UpdatedAt)
+			entity.Property(proformaInvoice => proformaInvoice.UpdatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("updated_at");
 
-			entity.Property(e => e.UserId)
+			entity.Property(proformaInvoice => proformaInvoice.UserId)
 				.HasColumnName("user_id");
 
-			entity.HasOne(d => d.House)
+			entity.HasOne(proformaInvoice => proformaInvoice.House)
 				.WithMany()
 				.HasForeignKey(d => d.HouseId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("fk_proforma_invoices_houses");
 
-			entity.HasOne(d => d.User)
+			entity.HasOne(proformaInvoice => proformaInvoice.User)
 				.WithMany()
-				.HasForeignKey(d => d.UserId)
+				.HasForeignKey(proformaInvoice => proformaInvoice.UserId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("fk_proforma_invoices_users");
 		});
 
 		modelBuilder.Entity<ProformaInvoiceFinishingHouse>(entity =>
 		{
-			entity.HasKey(e => new { e.ProformaInvoiceId, e.FinishingHouseId })
+			entity.HasKey(ProformaInvoiceFinishingHouse => new { ProformaInvoiceFinishingHouse.ProformaInvoiceId, ProformaInvoiceFinishingHouse.FinishingHouseId })
 				.HasName("PRIMARY");
 
 			entity.ToTable("proforma_invoices_finishing_houses");
 
-			entity.HasIndex(e => e.ProformaInvoiceId, "fk_proforma_invoices_finishing_houses_proforma_invoices");
+			entity.HasIndex(ProformaInvoiceFinishingHouse => ProformaInvoiceFinishingHouse.ProformaInvoiceId, "fk_proforma_invoices_finishing_houses_proforma_invoices");
 
-			entity.HasIndex(e => e.FinishingHouseId, "fk_proforma_invoices_finishing_houses_finishing_houses");
+			entity.HasIndex(ProformaInvoiceFinishingHouse => ProformaInvoiceFinishingHouse.FinishingHouseId, "fk_proforma_invoices_finishing_houses_finishing_houses");
 
-			entity.Property(e => e.ProformaInvoiceId)
+			entity.Property(ProformaInvoiceFinishingHouse => ProformaInvoiceFinishingHouse.ProformaInvoiceId)
 				.HasColumnName("proforma_invoice_id");
 
-			entity.Property(e => e.FinishingHouseId)
+			entity.Property(ProformaInvoiceFinishingHouse => ProformaInvoiceFinishingHouse.FinishingHouseId)
 				.HasColumnName("finishing_house_id");
 
 			entity.HasOne(d => d.ProformaInvoice)
-				.WithMany(p => p.ProformaInvoicesFinishingHouses)
-				.HasForeignKey(d => d.ProformaInvoiceId)
+				.WithMany(proformaInvoiceFishingHouse => proformaInvoiceFishingHouse.ProformaInvoicesFinishingHouses)
+				.HasForeignKey(proformaInvoiceFishingHouse => proformaInvoiceFishingHouse.ProformaInvoiceId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("fk_proforma_invoices_finishing_houses_proforma_invoices");
 
-			entity.HasOne(d => d.FinishingHouse)
-				.WithMany(p => p.ProformaInvoicesFinishingHouses)
-				.HasForeignKey(d => d.FinishingHouseId)
+			entity.HasOne(proformaInvoiceFishingHouse => proformaInvoiceFishingHouse.FinishingHouse)
+				.WithMany(proformaInvoiceFishingHouse => proformaInvoiceFishingHouse.ProformaInvoicesFinishingHouses)
+				.HasForeignKey(proformaInvoiceFishingHouse => proformaInvoiceFishingHouse.FinishingHouseId)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("fk_proforma_invoices_finishing_houses_finishing_houses");
 		});
 
 		modelBuilder.Entity<Role>(entity =>
 		{
-			entity.HasKey(e => e.RoleId)
+			entity.HasKey(role => role.RoleId)
 				.HasName("PRIMARY");
 
 			entity.ToTable("roles");
 
-			entity.Property(e => e.RoleId)
+			entity.Property(role => role.RoleId)
 				.HasColumnName("role_id");
 
-			entity.Property(e => e.CreatedAt)
+			entity.Property(role => role.CreatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("created_at");
 
-			entity.Property(e => e.Name)
+			entity.Property(role => role.Name)
 				.HasMaxLength(100)
 				.HasColumnName("name");
 
-			entity.Property(e => e.UpdatedAt)
+			entity.Property(role => role.UpdatedAt)
 				.HasDefaultValueSql("CURRENT_TIMESTAMP")
 				.HasColumnType("timestamp")
 				.HasColumnName("updated_at");
