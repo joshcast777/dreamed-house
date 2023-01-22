@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DreamedHouse.Data;
 using DreamedHouse.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamedHouse.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class FinishingHouseController : ControllerBase
 	{
 		private readonly AppDbContext _context;
@@ -50,29 +52,6 @@ namespace DreamedHouse.Controllers
 				})
 				.ToListAsync();
 		}
-
-		// GET: api/FinishingHouse/5
-		// [HttpGet("{id}")]
-		// public async Task<ActionResult<FinishingHouse>> GetFinishingHouse(int id)
-		// {
-		// 	if (_context.FinishingHouses == null)
-		// 		return NotFound();
-
-		// 	var finishingHouse = await _context.FinishingHouses
-		// 		.Select(finishingHouse => new FinishingHouse
-		// 		{
-		// 			FinishingHouseId = finishingHouse.FinishingHouseId,
-		// 			Name = finishingHouse.Name,
-		// 			Price = finishingHouse.Price,
-		// 			TypeFinishing = finishingHouse.TypeFinishing
-		// 		})
-		// 		.FirstOrDefaultAsync(finishingHouse => finishingHouse.FinishingHouseId == id);
-
-		// 	if (finishingHouse == null)
-		// 		return NotFound();
-
-		// 	return finishingHouse;
-		// }
 
 		// PUT: api/FinishingHouse/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DreamedHouse.Data;
 using DreamedHouse.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamedHouse.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class ProformaInvoiceFinishingHouseController : ControllerBase
 	{
 		private readonly AppDbContext _context;

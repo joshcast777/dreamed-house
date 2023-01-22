@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DreamedHouse.Data;
 using DreamedHouse.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamedHouse.Controllers
 {
@@ -19,6 +20,7 @@ namespace DreamedHouse.Controllers
 		// POST: api/House
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPost]
+		[Authorize]
 		public async Task<ActionResult<House>> PostHouse(House house)
 		{
 			if (_context.Houses == null)
@@ -41,7 +43,8 @@ namespace DreamedHouse.Controllers
 				return NotFound();
 
 			return await _context.Houses
-				.Select(house => new House{
+				.Select(house => new House
+				{
 					HouseId = house.HouseId,
 					Name = house.Name,
 					Image = house.Image,
@@ -85,10 +88,11 @@ namespace DreamedHouse.Controllers
 
 		// PUT: api/House/5
 		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutHouse(int id, House house)
+		[HttpPut("{houseId}")]
+		[Authorize]
+		public async Task<IActionResult> PutHouse(int houseId, House house)
 		{
-			if (id != house.HouseId)
+			if (houseId != house.HouseId)
 				return BadRequest();
 
 			house.UpdatedAt = DateTime.Now;
@@ -101,7 +105,7 @@ namespace DreamedHouse.Controllers
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!HouseExists(id))
+				if (!HouseExists(houseId))
 					return NotFound();
 				else
 					throw;
@@ -111,13 +115,14 @@ namespace DreamedHouse.Controllers
 		}
 
 		// DELETE: api/House/5
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteHouse(int id)
+		[HttpDelete("{houseId}")]
+		[Authorize]
+		public async Task<IActionResult> DeleteHouse(int houseId)
 		{
 			if (_context.Houses == null)
 				return NotFound();
 
-			var house = await _context.Houses.FindAsync(id);
+			var house = await _context.Houses.FindAsync(houseId);
 
 			if (house == null)
 				return NotFound();
