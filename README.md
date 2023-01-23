@@ -1,4 +1,4 @@
-# Dreamed House Project - Backend
+# Dreamed House Project
 
 ## Description
 
@@ -12,8 +12,25 @@ This project is for users to create house proformas. Users will have to log in, 
 
 ## Technologies
 
-* C#
-* ASP.NET Core
-* Entity Framework Core
-* MySQL
-* JWT
+### Editores de código o IDE
+
+- Visual Studio Code
+- Visual Studio 2022
+
+### Frontend
+
+- React
+- Vite.js
+- Typescript
+- PrimeReact de PrimeFaces
+- React Icons
+- TailwindCSS
+- AnimateCSS
+
+### Backend
+
+- C#
+- ASP.NET Core
+- Entity Framework Core
+- JWT
+- MySQL
